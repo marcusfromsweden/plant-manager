@@ -1,0 +1,5 @@
+com\example\plantmanager\service\PlantService.class
+com\example\plantmanager\PlantManagerApplication.class
+com\example\plantmanager\repository\PlantRepository.class
+com\example\plantmanager\controller\PlantController.class
+com\example\plantmanager\entity\Plant.class
