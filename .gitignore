@@ -1,0 +1,69 @@
+# Compiled class files
+*.class
+
+# Log files
+*.log
+spring.log
+
+# Temporary files and directories
+*.tmp
+*.temp
+*.out
+*.bak
+*.swp
+*.swo
+*.DS_Store
+
+# Package Files
+*.jar
+*.war
+*.ear
+
+# Maven-specific
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# Gradle-specific
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# IDEs and editors
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Operating system files
+Thumbs.db
+.DS_Store
+
+# Generated files
+*.gz
+*.zip
+*.7z
+*.tar
+*.rar
+
+# PostgreSQL-specific
+*.sql   # If you generate SQL dump files (optional)
+*.pgsql
+pgdata/
+
+# Spring Boot properties
+*.properties
+*.yml
+*.yaml
+
+# Environment and security
+.env
+.env.*
+secret.key
+config.json
