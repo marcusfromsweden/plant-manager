@@ -3,6 +3,8 @@ package com.example.plantmanager.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +24,14 @@ import com.example.plantmanager.service.PlantService;
 @RequestMapping("/api/plants")
 public class PlantController {
 
+    private static final Logger log = LoggerFactory.getLogger(PlantController.class);
+
     @Autowired
     private PlantService plantService;
 
     @GetMapping
     public ResponseEntity<List<Plant>> getAllPlants() {
+        log.warn(String.format("Getting all plants"));
         List<Plant> plants = plantService.getAllPlants();
         return new ResponseEntity<>(plants, HttpStatus.OK);
     }
