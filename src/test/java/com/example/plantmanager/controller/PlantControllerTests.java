@@ -1,10 +1,15 @@
 package com.example.plantmanager.controller;
 
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Optional;
-
-import static org.hamcrest.Matchers.is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -14,13 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.example.plantmanager.entity.GrowingLocation;
 import com.example.plantmanager.entity.Plant;
 import com.example.plantmanager.entity.PlantSpecies;
@@ -49,15 +47,15 @@ public class PlantControllerTests {
 
         growingLocation = new GrowingLocation();
         growingLocation.setId(1L);
-        growingLocation.setLocationName("Garden");
+        growingLocation.setLocationName("Clay pot nbr 1");
         growingLocation.setOccupied(true);
 
         plant = new Plant();
         plant.setId(1L);
         plant.setPlantSpecies(plantSpecies);
         plant.setGrowingLocation(growingLocation);
-        plant.setPlantingDate(LocalDate.of(2023, 1, 1));
-        plant.setGerminationDate(LocalDate.of(2023, 1, 15));
+        plant.setPlantingDate(LocalDate.of(2025, 1, 1));
+        plant.setGerminationDate(LocalDate.of(2025, 1, 15));
         plant.setComment("Healthy plant");
     }
 
