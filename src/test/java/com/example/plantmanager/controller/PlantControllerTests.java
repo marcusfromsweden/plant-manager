@@ -24,6 +24,11 @@ public class PlantControllerTests {
 
     private static final Logger logger = LoggerFactory.getLogger(PlantControllerTests.class);
 
+    private static final String PLANT_NAME = "Rose";
+    private static final String PLANT_DESCRIPTION = "A beautiful red rose";
+    private static final String PLANT_TYPE = "Flower";
+    private static final String PLANT_JSON = String.format("{\"name\": \"%s\", \"description\": \"%s\", \"type\": \"%s\"}", PLANT_NAME, PLANT_DESCRIPTION, PLANT_TYPE);
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -32,30 +37,30 @@ public class PlantControllerTests {
         logger.info("Starting test: testAddVerifyDeletePlant");
 
         // 1. Add a plant
-        String plantJson = "{\"name\": \"Rose\", \"description\": \"A beautiful red rose\", \"type\": \"Flower\"}";
-        logger.info("Adding a new plant with JSON: {}", plantJson);
+        logger.info("Adding a new plant with JSON: {}", PLANT_JSON);
         MvcResult result = mockMvc.perform(post("/api/plants")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(plantJson))
+                .content(PLANT_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name", is("Rose")))
-                .andExpect(jsonPath("$.description", is("A beautiful red rose")))
-                .andExpect(jsonPath("$.type", is("Flower")))
+                .andExpect(jsonPath("$.name", is(PLANT_NAME)))
+                .andExpect(jsonPath("$.description", is(PLANT_DESCRIPTION)))
+                .andExpect(jsonPath("$.type", is(PLANT_TYPE)))
                 .andReturn();
 
         // Extract the ID of the created plant
         String response = result.getResponse().getContentAsString();
         logger.error("Response from adding plant: {}", response);
-        Integer plantId = JsonPath.read(response, "$.id");
+        Integer plantIdInt = JsonPath.read(response, "$.id");
+        Long plantId = plantIdInt.longValue();
         logger.info("Created plant with ID: {}", plantId);
 
         // 2. Verify that the plant exists and has correct property values
         logger.info("Verifying that the plant exists with ID: {}", plantId);
         mockMvc.perform(get("/api/plants/" + plantId))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is("Rose")))
-                .andExpect(jsonPath("$.description", is("A beautiful red rose")))
-                .andExpect(jsonPath("$.type", is("Flower")));
+                .andExpect(jsonPath("$.name", is(PLANT_NAME)))
+                .andExpect(jsonPath("$.description", is(PLANT_DESCRIPTION)))
+                .andExpect(jsonPath("$.type", is(PLANT_TYPE)));
 
         // 3. Delete the plant
         logger.info("Deleting the plant with ID: {}", plantId);
