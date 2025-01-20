@@ -2,6 +2,8 @@ package com.example.plantmanager.controller;
 
 import static org.hamcrest.Matchers.is;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,13 +22,18 @@ import com.jayway.jsonpath.JsonPath;
 @AutoConfigureMockMvc
 public class PlantControllerTests {
 
+    private static final Logger logger = LoggerFactory.getLogger(PlantControllerTests.class);
+
     @Autowired
     private MockMvc mockMvc;
 
     @Test
     public void testAddVerifyDeletePlant() throws Exception {
+        logger.info("Starting test: testAddVerifyDeletePlant");
+
         // 1. Add a plant
         String plantJson = "{\"name\": \"Rose\", \"description\": \"A beautiful red rose\", \"type\": \"Flower\"}";
+        logger.info("Adding a new plant with JSON: {}", plantJson);
         MvcResult result = mockMvc.perform(post("/api/plants")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(plantJson))
@@ -38,10 +45,12 @@ public class PlantControllerTests {
 
         // Extract the ID of the created plant
         String response = result.getResponse().getContentAsString();
+        logger.error("Response from adding plant: {}", response);
+        Integer plantId = JsonPath.read(response, "$.id");
         logger.info("Created plant with ID: {}", plantId);
-        Long plantId = JsonPath.read(response, "$.id");
 
         // 2. Verify that the plant exists and has correct property values
+        logger.info("Verifying that the plant exists with ID: {}", plantId);
         mockMvc.perform(get("/api/plants/" + plantId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", is("Rose")))
@@ -49,11 +58,15 @@ public class PlantControllerTests {
                 .andExpect(jsonPath("$.type", is("Flower")));
 
         // 3. Delete the plant
+        logger.info("Deleting the plant with ID: {}", plantId);
         mockMvc.perform(delete("/api/plants/" + plantId))
                 .andExpect(status().isNoContent());
 
         // 4. Verify that the plant no longer exists
+        logger.info("Verifying that the plant no longer exists with ID: {}", plantId);
         mockMvc.perform(get("/api/plants/" + plantId))
                 .andExpect(status().isNotFound());
+
+        logger.info("Completed test: testAddVerifyDeletePlant");
     }
 }
