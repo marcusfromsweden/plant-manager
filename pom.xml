@@ -15,6 +15,7 @@
         <java.version>17</java.version>
         <spring.boot.version>2.6.6</spring.boot.version>
         <org.postgresql.version>42.2.23</org.postgresql.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     
     <dependencyManagement>
@@ -26,11 +27,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <dependency>
-                <groupId>org.postgresql</groupId>
-                <artifactId>postgresql</artifactId>
-                <version>${org.postgresql.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -39,27 +35,14 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-        
         <dependency>
             <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
+            <artifactId>postgresql</artifactId>            
         </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -70,6 +53,10 @@
             <artifactId>json-path</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -79,21 +66,23 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring.boot.version}</version>
             </plugin>
-            <plugin>
-                <groupId>net.revelc.code.formatter</groupId>
-                <artifactId>formatter-maven-plugin</artifactId>
-                <version>2.17.0</version>
-                <configuration>
-                    <configFile>${basedir}/eclipse-java-google-style.xml</configFile>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>format</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--             <plugin>
+                           <groupId>net.revelc.code.formatter</groupId>
+                           <artifactId>formatter-maven-plugin</artifactId>
+                           <version>2.17.0</version>
+                           <configuration>
+                               <configFile>${basedir}/eclipse-java-google-style.xml</configFile>
+                               <encoding>${project.build.sourceEncoding}</encoding>
+                           </configuration>
+                           <executions>
+                               <execution>
+                                   <goals>
+                                       <goal>format</goal>
+                                   </goals>
+                               </execution>
+                           </executions>
+                       </plugin>
+            -->        
         </plugins>
     </build>
 </project>
