@@ -1,9 +1,12 @@
 package com.example.plantmanager.entity;
 
+import java.time.LocalDate;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Plant {
@@ -12,10 +15,17 @@ public class Plant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private String type;
-    private String description;
+    @ManyToOne
+    private PlantSpecies plantSpecies;
 
+    @ManyToOne
+    private GrowingLocation growingLocation;
+
+    private LocalDate plantingDate;
+    private LocalDate germinationDate;
+    private String comment;
+
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -24,27 +34,43 @@ public class Plant {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public PlantSpecies getPlantSpecies() {
+        return plantSpecies;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPlantSpecies(PlantSpecies plantSpecies) {
+        this.plantSpecies = plantSpecies;
     }
 
-    public String getType() {
-        return type;
+    public GrowingLocation getGrowingLocation() {
+        return growingLocation;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setGrowingLocation(GrowingLocation growingLocation) {
+        this.growingLocation = growingLocation;
     }
 
-    public String getDescription() {
-        return description;
+    public LocalDate getPlantingDate() {
+        return plantingDate;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setPlantingDate(LocalDate plantingDate) {
+        this.plantingDate = plantingDate;
+    }
+
+    public LocalDate getGerminationDate() {
+        return germinationDate;
+    }
+
+    public void setGerminationDate(LocalDate germinationDate) {
+        this.germinationDate = germinationDate;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

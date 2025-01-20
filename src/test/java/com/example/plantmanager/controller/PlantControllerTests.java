@@ -1,79 +1,165 @@
 package com.example.plantmanager.controller;
 
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Optional;
+
 import static org.hamcrest.Matchers.is;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.jayway.jsonpath.JsonPath;
+import com.example.plantmanager.entity.GrowingLocation;
+import com.example.plantmanager.entity.Plant;
+import com.example.plantmanager.entity.PlantSpecies;
+import com.example.plantmanager.service.PlantService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 public class PlantControllerTests {
 
-    private static final Logger logger = LoggerFactory.getLogger(PlantControllerTests.class);
-
-    private static final String PLANT_NAME = "Rose";
-    private static final String PLANT_DESCRIPTION = "A beautiful red rose";
-    private static final String PLANT_TYPE = "Flower";
-    private static final String PLANT_JSON = String.format(
-            "{\"name\": \"%s\", \"description\": \"%s\", \"type\": \"%s\"}",
-            PLANT_NAME, PLANT_DESCRIPTION, PLANT_TYPE);
-
     @Autowired
     private MockMvc mockMvc;
 
+    @MockBean
+    private PlantService plantService;
+
+    private Plant plant;
+    private PlantSpecies plantSpecies;
+    private GrowingLocation growingLocation;
+
+    @BeforeEach
+    public void setup() {
+        plantSpecies = new PlantSpecies();
+        plantSpecies.setId(1L);
+        plantSpecies.setName("Rose");
+        plantSpecies.setDescription("Beautiful flower");
+
+        growingLocation = new GrowingLocation();
+        growingLocation.setId(1L);
+        growingLocation.setLocationName("Garden");
+        growingLocation.setOccupied(true);
+
+        plant = new Plant();
+        plant.setId(1L);
+        plant.setPlantSpecies(plantSpecies);
+        plant.setGrowingLocation(growingLocation);
+        plant.setPlantingDate(LocalDate.of(2023, 1, 1));
+        plant.setGerminationDate(LocalDate.of(2023, 1, 15));
+        plant.setComment("Healthy plant");
+    }
+
     @Test
-    public void testAddVerifyDeletePlant() throws Exception {
-        logger.info("Starting test: testAddVerifyDeletePlant");
+    public void testGetAllPlants() throws Exception {
+        Mockito.when(plantService.getAllPlants()).thenReturn(Arrays.asList(plant));
 
-        // 1. Add a plant
-        logger.info("Adding a new plant with JSON: {}", PLANT_JSON);
-        MvcResult result = mockMvc.perform(post("/api/plants")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(PLANT_JSON))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name", is(PLANT_NAME)))
-                .andExpect(jsonPath("$.description", is(PLANT_DESCRIPTION)))
-                .andExpect(jsonPath("$.type", is(PLANT_TYPE)))
-                .andReturn();
-
-        // Extract the ID of the created plant
-        String response = result.getResponse().getContentAsString();
-        logger.error("Response from adding plant: {}", response);
-        Integer plantIdInt = JsonPath.read(response, "$.id");
-        Long plantId = plantIdInt.longValue();
-        logger.info("Created plant with ID: {}", plantId);
-
-        // 2. Verify that the plant exists and has correct property values
-        logger.info("Verifying that the plant exists with ID: {}", plantId);
-        mockMvc.perform(get("/api/plants/" + plantId))
+        mockMvc.perform(get("/api/plants")
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is(PLANT_NAME)))
-                .andExpect(jsonPath("$.description", is(PLANT_DESCRIPTION)))
-                .andExpect(jsonPath("$.type", is(PLANT_TYPE)));
+                .andExpect(jsonPath("$[0].id", is(plant.getId().intValue())))
+                .andExpect(jsonPath("$[0].plantSpecies.id", is(plantSpecies.getId().intValue())))
+                .andExpect(jsonPath("$[0].growingLocation.id", is(growingLocation.getId().intValue())))
+                .andExpect(jsonPath("$[0].plantingDate", is(plant.getPlantingDate().toString())))
+                .andExpect(jsonPath("$[0].germinationDate", is(plant.getGerminationDate().toString())))
+                .andExpect(jsonPath("$[0].comment", is(plant.getComment())));
+    }
 
-        // 3. Delete the plant
-        logger.info("Deleting the plant with ID: {}", plantId);
-        mockMvc.perform(delete("/api/plants/" + plantId))
+    @Test
+    public void testGetPlantById() throws Exception {
+        Mockito.when(plantService.getPlantById(plant.getId())).thenReturn(Optional.of(plant));
+
+        mockMvc.perform(get("/api/plants/{id}", plant.getId())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(plant.getId().intValue())))
+                .andExpect(jsonPath("$.plantSpecies.id", is(plantSpecies.getId().intValue())))
+                .andExpect(jsonPath("$.growingLocation.id", is(growingLocation.getId().intValue())))
+                .andExpect(jsonPath("$.plantingDate", is(plant.getPlantingDate().toString())))
+                .andExpect(jsonPath("$.germinationDate", is(plant.getGerminationDate().toString())))
+                .andExpect(jsonPath("$.comment", is(plant.getComment())));
+    }
+
+    @Test
+    public void testCreatePlant() throws Exception {
+        Mockito.when(plantService.addPlant(
+                plant.getPlantSpecies().getId(),
+                plant.getGrowingLocation().getId(),
+                plant.getPlantingDate(),
+                plant.getGerminationDate(),
+                plant.getComment()
+        )).thenReturn(plant);
+
+        String plantJson = String.format(
+                "{\"plantSpecies\":{\"id\":%d},\"growingLocation\":{\"id\":%d},\"plantingDate\":\"%s\",\"germinationDate\":\"%s\",\"comment\":\"%s\"}",
+                plant.getPlantSpecies().getId(),
+                plant.getGrowingLocation().getId(),
+                plant.getPlantingDate().toString(),
+                plant.getGerminationDate().toString(),
+                plant.getComment()
+        );
+
+        mockMvc.perform(post("/api/plants")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(plantJson))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id", is(plant.getId().intValue())))
+                .andExpect(jsonPath("$.plantSpecies.id", is(plantSpecies.getId().intValue())))
+                .andExpect(jsonPath("$.growingLocation.id", is(growingLocation.getId().intValue())))
+                .andExpect(jsonPath("$.plantingDate", is(plant.getPlantingDate().toString())))
+                .andExpect(jsonPath("$.germinationDate", is(plant.getGerminationDate().toString())))
+                .andExpect(jsonPath("$.comment", is(plant.getComment())));
+    }
+
+    @Test
+    public void testUpdatePlant() throws Exception {
+        Mockito.when(plantService.updatePlant(
+                plant.getId(),
+                plant.getPlantSpecies().getId(),
+                plant.getGrowingLocation().getId(),
+                plant.getPlantingDate(),
+                plant.getGerminationDate(),
+                plant.getComment()
+        )).thenReturn(plant);
+
+        String plantJson = String.format(
+                "{\"plantSpecies\":{\"id\":%d},\"growingLocation\":{\"id\":%d},\"plantingDate\":\"%s\",\"germinationDate\":\"%s\",\"comment\":\"%s\"}",
+                plant.getPlantSpecies().getId(),
+                plant.getGrowingLocation().getId(),
+                plant.getPlantingDate().toString(),
+                plant.getGerminationDate().toString(),
+                plant.getComment()
+        );
+
+        mockMvc.perform(put("/api/plants/{id}", plant.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(plantJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(plant.getId().intValue())))
+                .andExpect(jsonPath("$.plantSpecies.id", is(plantSpecies.getId().intValue())))
+                .andExpect(jsonPath("$.growingLocation.id", is(growingLocation.getId().intValue())))
+                .andExpect(jsonPath("$.plantingDate", is(plant.getPlantingDate().toString())))
+                .andExpect(jsonPath("$.germinationDate", is(plant.getGerminationDate().toString())))
+                .andExpect(jsonPath("$.comment", is(plant.getComment())));
+    }
+
+    @Test
+    public void testDeletePlant() throws Exception {
+        Mockito.doNothing().when(plantService).deletePlant(plant.getId());
+
+        mockMvc.perform(delete("/api/plants/{id}", plant.getId())
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
-
-        // 4. Verify that the plant no longer exists
-        logger.info("Verifying that the plant no longer exists with ID: {}", plantId);
-        mockMvc.perform(get("/api/plants/" + plantId))
-                .andExpect(status().isNotFound());
-
-        logger.info("Completed test: testAddVerifyDeletePlant");
     }
 }

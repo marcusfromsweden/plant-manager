@@ -31,7 +31,7 @@ public class PlantController {
 
     @GetMapping
     public ResponseEntity<List<Plant>> getAllPlants() {
-        log.warn(String.format("Getting all plants"));
+        log.warn("Getting all plants");
         List<Plant> plants = plantService.getAllPlants();
         return new ResponseEntity<>(plants, HttpStatus.OK);
     }
@@ -39,33 +39,38 @@ public class PlantController {
     @GetMapping("/{id}")
     public ResponseEntity<Plant> getPlantById(@PathVariable Long id) {
         Optional<Plant> plant = plantService.getPlantById(id);
-        if (plant.isPresent()) {
-            return new ResponseEntity<>(plant.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
+        return plant.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
     public ResponseEntity<Plant> createPlant(@RequestBody Plant plant) {
-        Plant createdPlant = plantService.addPlant(plant);
+        Plant createdPlant = plantService.addPlant(
+                plant.getPlantSpecies().getId(),
+                plant.getGrowingLocation().getId(),
+                plant.getPlantingDate(),
+                plant.getGerminationDate(),
+                plant.getComment()
+        );
         return new ResponseEntity<>(createdPlant, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Plant> updatePlant(@PathVariable Long id, @RequestBody Plant plant) {
-        Plant updatedPlant = plantService.updatePlant(id, plant);
-        return updatedPlant != null ? new ResponseEntity<>(updatedPlant, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Plant updatedPlant = plantService.updatePlant(
+                id,
+                plant.getPlantSpecies().getId(),
+                plant.getGrowingLocation().getId(),
+                plant.getPlantingDate(),
+                plant.getGerminationDate(),
+                plant.getComment()
+        );
+        return new ResponseEntity<>(updatedPlant, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePlant(@PathVariable Long id) {
-        if (plantService.getPlantById(id).isPresent()) {
-            plantService.deletePlant(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        plantService.deletePlant(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
