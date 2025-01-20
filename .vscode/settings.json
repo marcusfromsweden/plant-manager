@@ -1,4 +1,37 @@
 {
+    // Automatically update the build configuration when changes are detected
     "java.configuration.updateBuildConfiguration": "automatic",
-    "java.compile.nullAnalysis.mode": "automatic"
+    // Enable automatic null analysis during compilation
+    "java.compile.nullAnalysis.mode": "automatic",
+    // Automatically format the file when you save it
+    "editor.formatOnSave": true,
+    // Automatically organize imports when you save the file
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+    },
+    // Enable Error Lens to highlight errors and warnings inline in the editor
+    "errorLens.enabled": true,
+    // Enable Code Lenses for references
+    "java.referencesCodeLens.enabled": true,
+    // Enable Code Lenses for implementations
+    "java.implementationsCodeLens.enabled": true,
+    // Automatically save files after a delay
+    "files.autoSave": "afterDelay",
+    // Set the delay for auto-saving files (in milliseconds)
+    "files.autoSaveDelay": 1000,
+    // Enable breadcrumbs to show the current location and allow navigation in the file
+    "breadcrumbs.enabled": true,
+    // Show the test report after executing tests
+    "java.test.report.showAfterExecution": "always",
+    // Set the log level for the Java Test Runner
+    "java.test.log.level": "info",
+    // Use the Google Java Style Guide for formatting
+    "java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
+    "java.format.settings.profile": "GoogleStyle",
+    // Enable code actions for declaration
+    "java.codeActions.declaration": true,
+    // Enable code actions for import order
+    "java.codeActions.importOrder": true,
+    // Enable inlay hints for parameter names
+    "java.inlayHints.parameterNames.enabled": "all"
 }

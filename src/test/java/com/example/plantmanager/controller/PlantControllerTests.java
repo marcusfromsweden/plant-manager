@@ -27,7 +27,9 @@ public class PlantControllerTests {
     private static final String PLANT_NAME = "Rose";
     private static final String PLANT_DESCRIPTION = "A beautiful red rose";
     private static final String PLANT_TYPE = "Flower";
-    private static final String PLANT_JSON = String.format("{\"name\": \"%s\", \"description\": \"%s\", \"type\": \"%s\"}", PLANT_NAME, PLANT_DESCRIPTION, PLANT_TYPE);
+    private static final String PLANT_JSON = String.format(
+            "{\"name\": \"%s\", \"description\": \"%s\", \"type\": \"%s\"}",
+            PLANT_NAME, PLANT_DESCRIPTION, PLANT_TYPE);
 
     @Autowired
     private MockMvc mockMvc;
