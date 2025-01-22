@@ -7,7 +7,7 @@
     "editor.formatOnSave": true,
     // Automatically organize imports when you save the file
     "editor.codeActionsOnSave": {
-        "source.organizeImports": true
+        "source.organizeImports": "explicit"
     },
     // Enable Error Lens to highlight errors and warnings inline in the editor
     "errorLens.enabled": true,
