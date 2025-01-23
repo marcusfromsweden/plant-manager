@@ -71,8 +71,7 @@ public class PlantSpeciesControllerTests {
     public void testCreatePlantSpecies() throws Exception {
         Mockito.when(plantSpeciesService.createPlantSpecies(Mockito.any(PlantSpecies.class))).thenReturn(plantSpecies);
 
-        String plantSpeciesJson = String.format(
-                "{\"name\":\"%s\",\"description\":\"%s\"}",
+        String plantSpeciesJson = "{\"name\":\"%s\",\"description\":\"%s\"}".formatted(
                 plantSpecies.getName(),
                 plantSpecies.getDescription()
         );
@@ -90,8 +89,7 @@ public class PlantSpeciesControllerTests {
     public void testUpdatePlantSpecies() throws Exception {
         Mockito.when(plantSpeciesService.updatePlantSpecies(Mockito.eq(plantSpecies.getId()), Mockito.any(PlantSpecies.class))).thenReturn(plantSpecies);
 
-        String plantSpeciesJson = String.format(
-                "{\"name\":\"%s\",\"description\":\"%s\"}",
+        String plantSpeciesJson = "{\"name\":\"%s\",\"description\":\"%s\"}".formatted(
                 plantSpecies.getName(),
                 plantSpecies.getDescription()
         );

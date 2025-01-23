@@ -71,8 +71,7 @@ public class GrowingLocationControllerTests {
     public void testCreateGrowingLocation() throws Exception {
         Mockito.when(growingLocationService.createGrowingLocation(Mockito.any(GrowingLocation.class))).thenReturn(growingLocation);
 
-        String growingLocationJson = String.format(
-                "{\"locationName\":\"%s\",\"occupied\":%b}",
+        String growingLocationJson = "{\"locationName\":\"%s\",\"occupied\":%b}".formatted(
                 growingLocation.getLocationName(),
                 growingLocation.isOccupied()
         );
@@ -90,8 +89,7 @@ public class GrowingLocationControllerTests {
     public void testUpdateGrowingLocation() throws Exception {
         Mockito.when(growingLocationService.updateGrowingLocation(Mockito.eq(growingLocation.getId()), Mockito.any(GrowingLocation.class))).thenReturn(growingLocation);
 
-        String growingLocationJson = String.format(
-                "{\"locationName\":\"%s\",\"occupied\":%b}",
+        String growingLocationJson = "{\"locationName\":\"%s\",\"occupied\":%b}".formatted(
                 growingLocation.getLocationName(),
                 growingLocation.isOccupied()
         );

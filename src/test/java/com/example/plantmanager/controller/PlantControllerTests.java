@@ -99,8 +99,7 @@ public class PlantControllerTests {
                 plant.getComment()
         )).thenReturn(plant);
 
-        String plantJson = String.format(
-                "{\"plantSpecies\":{\"id\":%d},\"growingLocation\":{\"id\":%d},\"plantingDate\":\"%s\",\"germinationDate\":\"%s\",\"comment\":\"%s\"}",
+        String plantJson = "{\"plantSpecies\":{\"id\":%d},\"growingLocation\":{\"id\":%d},\"plantingDate\":\"%s\",\"germinationDate\":\"%s\",\"comment\":\"%s\"}".formatted(
                 plant.getPlantSpecies().getId(),
                 plant.getGrowingLocation().getId(),
                 plant.getPlantingDate().toString(),
@@ -131,8 +130,7 @@ public class PlantControllerTests {
                 plant.getComment()
         )).thenReturn(plant);
 
-        String plantJson = String.format(
-                "{\"plantSpecies\":{\"id\":%d},\"growingLocation\":{\"id\":%d},\"plantingDate\":\"%s\",\"germinationDate\":\"%s\",\"comment\":\"%s\"}",
+        String plantJson = "{\"plantSpecies\":{\"id\":%d},\"growingLocation\":{\"id\":%d},\"plantingDate\":\"%s\",\"germinationDate\":\"%s\",\"comment\":\"%s\"}".formatted(
                 plant.getPlantSpecies().getId(),
                 plant.getGrowingLocation().getId(),
                 plant.getPlantingDate().toString(),
