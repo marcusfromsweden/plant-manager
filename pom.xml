@@ -18,6 +18,7 @@
         <postgresql.version>42.6.0</postgresql.version>
         <json-path.version>2.7.0</json-path.version>
         <logback.version>1.4.11</logback.version>
+        <springdoc-openapi.version>2.2.0</springdoc-openapi.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -63,8 +64,8 @@
         </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.7.0</version>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${springdoc-openapi.version}</version>
         </dependency>
     </dependencies>
 
