@@ -2,7 +2,6 @@ package com.marcusfromsweden.plantdoctor.service;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.marcusfromsweden.plantdoctor.entity.GrowingLocation;
@@ -40,5 +39,9 @@ public class GrowingLocationService {
 
     public void deleteGrowingLocation(Long id) {
         growingLocationRepository.deleteById(id);
+    }
+
+    public void deleteAllGrowingLocations() {
+        growingLocationRepository.deleteAll();
     }
 }

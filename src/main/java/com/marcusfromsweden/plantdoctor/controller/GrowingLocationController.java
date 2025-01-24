@@ -48,15 +48,28 @@ public class GrowingLocationController {
 
     @PutMapping("/{id}")
     public ResponseEntity<GrowingLocation> updateGrowingLocation(@PathVariable Long id,
-            @Valid @RequestBody GrowingLocation growingLocation) {
-        GrowingLocation updatedGrowingLocation =
-                growingLocationService.updateGrowingLocation(id, growingLocation);
-        return new ResponseEntity<>(updatedGrowingLocation, HttpStatus.OK);
+            @RequestBody GrowingLocation growingLocation) {
+        Optional<GrowingLocation> existingLocation =
+                growingLocationService.getGrowingLocationById(id);
+        if (existingLocation.isPresent()) {
+            growingLocation.setId(id);
+            GrowingLocation updatedGrowingLocation =
+                    growingLocationService.updateGrowingLocation(id, growingLocation);
+            return new ResponseEntity<>(updatedGrowingLocation, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteGrowingLocation(@PathVariable Long id) {
         growingLocationService.deleteGrowingLocation(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/all")
+    public ResponseEntity<Void> deleteAllGrowingLocations() {
+        growingLocationService.deleteAllGrowingLocations();
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
