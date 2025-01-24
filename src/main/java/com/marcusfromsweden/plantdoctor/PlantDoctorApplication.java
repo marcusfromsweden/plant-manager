@@ -1,4 +1,4 @@
-package com.example.plantmanager;
+package com.marcusfromsweden.plantdoctor;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package com.example.plantmanager.entity;
+package com.marcusfromsweden.plantdoctor.entity;
 
 import java.time.LocalDate;
 import jakarta.persistence.Entity;

@@ -1,4 +1,4 @@
-package com.example.plantmanager.controller;
+package com.marcusfromsweden.plantdoctor.controller;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -13,15 +13,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import com.marcusfromsweden.plantdoctor.entity.GrowingLocation;
+import com.marcusfromsweden.plantdoctor.service.GrowingLocationService;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import com.example.plantmanager.entity.GrowingLocation;
-import com.example.plantmanager.service.GrowingLocationService;
 
 @SpringBootTest
 @AutoConfigureMockMvc

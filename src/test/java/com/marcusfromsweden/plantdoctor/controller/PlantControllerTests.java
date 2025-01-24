@@ -1,4 +1,4 @@
-package com.example.plantmanager.controller;
+package com.marcusfromsweden.plantdoctor.controller;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -19,10 +19,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import com.example.plantmanager.entity.GrowingLocation;
-import com.example.plantmanager.entity.Plant;
-import com.example.plantmanager.entity.PlantSpecies;
-import com.example.plantmanager.service.PlantService;
+import com.marcusfromsweden.plantdoctor.entity.GrowingLocation;
+import com.marcusfromsweden.plantdoctor.entity.Plant;
+import com.marcusfromsweden.plantdoctor.entity.PlantSpecies;
+import com.marcusfromsweden.plantdoctor.service.PlantService;
 
 @SpringBootTest
 @AutoConfigureMockMvc

@@ -1,4 +1,4 @@
-package com.example.plantmanager.service;
+package com.marcusfromsweden.plantdoctor.service;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -6,13 +6,12 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.example.plantmanager.entity.GrowingLocation;
-import com.example.plantmanager.entity.Plant;
-import com.example.plantmanager.entity.PlantSpecies;
-import com.example.plantmanager.repository.GrowingLocationRepository;
-import com.example.plantmanager.repository.PlantRepository;
-import com.example.plantmanager.repository.PlantSpeciesRepository;
+import com.marcusfromsweden.plantdoctor.entity.GrowingLocation;
+import com.marcusfromsweden.plantdoctor.entity.Plant;
+import com.marcusfromsweden.plantdoctor.entity.PlantSpecies;
+import com.marcusfromsweden.plantdoctor.repository.GrowingLocationRepository;
+import com.marcusfromsweden.plantdoctor.repository.PlantRepository;
+import com.marcusfromsweden.plantdoctor.repository.PlantSpeciesRepository;
 
 @Service
 public class PlantService {

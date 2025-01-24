@@ -1,4 +1,4 @@
-package com.example.plantmanager.controller;
+package com.marcusfromsweden.plantdoctor.controller;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.plantmanager.entity.GrowingLocation;
-import com.example.plantmanager.service.GrowingLocationService;
+import com.marcusfromsweden.plantdoctor.entity.GrowingLocation;
+import com.marcusfromsweden.plantdoctor.service.GrowingLocationService;
 import jakarta.validation.Valid;
 
 @RestController
