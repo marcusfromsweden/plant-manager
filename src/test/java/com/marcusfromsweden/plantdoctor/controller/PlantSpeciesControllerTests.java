@@ -1,9 +1,14 @@
 package com.marcusfromsweden.plantdoctor.controller;
 
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.util.Arrays;
 import java.util.Optional;
-
-import static org.hamcrest.Matchers.is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -15,12 +20,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import com.marcusfromsweden.plantdoctor.entity.PlantSpecies;
 import com.marcusfromsweden.plantdoctor.service.PlantSpeciesService;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -38,16 +37,16 @@ public class PlantSpeciesControllerTests {
     public void setup() {
         plantSpecies = new PlantSpecies();
         plantSpecies.setId(1L);
-        plantSpecies.setName("Rose");
-        plantSpecies.setDescription("A beautiful flower");
+        plantSpecies.setName("Tomato");
+        plantSpecies.setDescription("A tasty treat");
     }
 
     @Test
     public void testGetAllPlantSpecies() throws Exception {
-        Mockito.when(plantSpeciesService.getAllPlantSpecies()).thenReturn(Arrays.asList(plantSpecies));
+        Mockito.when(plantSpeciesService.getAllPlantSpecies())
+                .thenReturn(Arrays.asList(plantSpecies));
 
-        mockMvc.perform(get("/api/plant-species")
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/plant-species").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", is(plantSpecies.getId().intValue())))
                 .andExpect(jsonPath("$[0].name", is(plantSpecies.getName())))
@@ -56,11 +55,11 @@ public class PlantSpeciesControllerTests {
 
     @Test
     public void testGetPlantSpeciesById() throws Exception {
-        Mockito.when(plantSpeciesService.getPlantSpeciesById(plantSpecies.getId())).thenReturn(Optional.of(plantSpecies));
+        Mockito.when(plantSpeciesService.getPlantSpeciesById(plantSpecies.getId()))
+                .thenReturn(Optional.of(plantSpecies));
 
         mockMvc.perform(get("/api/plant-species/{id}", plantSpecies.getId())
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(plantSpecies.getId().intValue())))
                 .andExpect(jsonPath("$.name", is(plantSpecies.getName())))
                 .andExpect(jsonPath("$.description", is(plantSpecies.getDescription())));
@@ -68,17 +67,14 @@ public class PlantSpeciesControllerTests {
 
     @Test
     public void testCreatePlantSpecies() throws Exception {
-        Mockito.when(plantSpeciesService.createPlantSpecies(Mockito.any(PlantSpecies.class))).thenReturn(plantSpecies);
+        Mockito.when(plantSpeciesService.createPlantSpecies(Mockito.any(PlantSpecies.class)))
+                .thenReturn(plantSpecies);
 
-        String plantSpeciesJson = "{\"name\":\"%s\",\"description\":\"%s\"}".formatted(
-                plantSpecies.getName(),
-                plantSpecies.getDescription()
-        );
+        String plantSpeciesJson = "{\"name\":\"%s\",\"description\":\"%s\"}"
+                .formatted(plantSpecies.getName(), plantSpecies.getDescription());
 
-        mockMvc.perform(post("/api/plant-species")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(plantSpeciesJson))
-                .andExpect(status().isCreated())
+        mockMvc.perform(post("/api/plant-species").contentType(MediaType.APPLICATION_JSON)
+                .content(plantSpeciesJson)).andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(plantSpecies.getId().intValue())))
                 .andExpect(jsonPath("$.name", is(plantSpecies.getName())))
                 .andExpect(jsonPath("$.description", is(plantSpecies.getDescription())));
@@ -86,16 +82,14 @@ public class PlantSpeciesControllerTests {
 
     @Test
     public void testUpdatePlantSpecies() throws Exception {
-        Mockito.when(plantSpeciesService.updatePlantSpecies(Mockito.eq(plantSpecies.getId()), Mockito.any(PlantSpecies.class))).thenReturn(plantSpecies);
+        Mockito.when(plantSpeciesService.updatePlantSpecies(Mockito.eq(plantSpecies.getId()),
+                Mockito.any(PlantSpecies.class))).thenReturn(plantSpecies);
 
-        String plantSpeciesJson = "{\"name\":\"%s\",\"description\":\"%s\"}".formatted(
-                plantSpecies.getName(),
-                plantSpecies.getDescription()
-        );
+        String plantSpeciesJson = "{\"name\":\"%s\",\"description\":\"%s\"}"
+                .formatted(plantSpecies.getName(), plantSpecies.getDescription());
 
         mockMvc.perform(put("/api/plant-species/{id}", plantSpecies.getId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(plantSpeciesJson))
+                .contentType(MediaType.APPLICATION_JSON).content(plantSpeciesJson))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(plantSpecies.getId().intValue())))
                 .andExpect(jsonPath("$.name", is(plantSpecies.getName())))
@@ -107,7 +101,6 @@ public class PlantSpeciesControllerTests {
         Mockito.doNothing().when(plantSpeciesService).deletePlantSpecies(plantSpecies.getId());
 
         mockMvc.perform(delete("/api/plant-species/{id}", plantSpecies.getId())
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNoContent());
     }
 }
