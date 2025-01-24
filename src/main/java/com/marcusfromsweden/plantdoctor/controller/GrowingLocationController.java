@@ -48,7 +48,7 @@ public class GrowingLocationController {
 
     @PutMapping("/{id}")
     public ResponseEntity<GrowingLocation> updateGrowingLocation(@PathVariable Long id,
-            @RequestBody GrowingLocation growingLocation) {
+            @Valid @RequestBody GrowingLocation growingLocation) {
         Optional<GrowingLocation> existingLocation =
                 growingLocationService.getGrowingLocationById(id);
         if (existingLocation.isPresent()) {
