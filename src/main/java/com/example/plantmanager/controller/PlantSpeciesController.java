@@ -46,7 +46,7 @@ public class PlantSpeciesController {
 
     @PutMapping("/{id}")
     public ResponseEntity<PlantSpecies> updatePlantSpecies(@PathVariable Long id,
-            @RequestBody PlantSpecies plantSpecies) {
+            @Valid @RequestBody PlantSpecies plantSpecies) {
         PlantSpecies updatedPlantSpecies = plantSpeciesService.updatePlantSpecies(id, plantSpecies);
         return new ResponseEntity<>(updatedPlantSpecies, HttpStatus.OK);
     }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.plantmanager.entity.Plant;
 import com.example.plantmanager.service.PlantService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/plants")
@@ -44,7 +45,7 @@ public class PlantController {
     }
 
     @PostMapping
-    public ResponseEntity<Plant> createPlant(@RequestBody Plant plant) {
+    public ResponseEntity<Plant> createPlant(@Valid @RequestBody Plant plant) {
         Plant createdPlant = plantService.addPlant(
                 plant.getPlantSpecies().getId(),
                 plant.getGrowingLocation().getId(),
@@ -56,7 +57,7 @@ public class PlantController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Plant> updatePlant(@PathVariable Long id, @RequestBody Plant plant) {
+    public ResponseEntity<Plant> updatePlant(@PathVariable Long id, @Valid @RequestBody Plant plant) {
         Plant updatedPlant = plantService.updatePlant(
                 id,
                 plant.getPlantSpecies().getId(),

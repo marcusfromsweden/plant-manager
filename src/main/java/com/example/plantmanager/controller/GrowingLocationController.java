@@ -2,7 +2,6 @@ package com.example.plantmanager.controller;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +13,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.plantmanager.entity.GrowingLocation;
 import com.example.plantmanager.service.GrowingLocationService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/growing-locations")
@@ -33,20 +32,25 @@ public class GrowingLocationController {
 
     @GetMapping("/{id}")
     public ResponseEntity<GrowingLocation> getGrowingLocationById(@PathVariable Long id) {
-        Optional<GrowingLocation> growingLocation = growingLocationService.getGrowingLocationById(id);
+        Optional<GrowingLocation> growingLocation =
+                growingLocationService.getGrowingLocationById(id);
         return growingLocation.map(location -> new ResponseEntity<>(location, HttpStatus.OK))
-                              .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
-    public ResponseEntity<GrowingLocation> createGrowingLocation(@RequestBody GrowingLocation growingLocation) {
-        GrowingLocation createdGrowingLocation = growingLocationService.createGrowingLocation(growingLocation);
+    public ResponseEntity<GrowingLocation> createGrowingLocation(
+            @Valid @RequestBody GrowingLocation growingLocation) {
+        GrowingLocation createdGrowingLocation =
+                growingLocationService.createGrowingLocation(growingLocation);
         return new ResponseEntity<>(createdGrowingLocation, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<GrowingLocation> updateGrowingLocation(@PathVariable Long id, @RequestBody GrowingLocation growingLocation) {
-        GrowingLocation updatedGrowingLocation = growingLocationService.updateGrowingLocation(id, growingLocation);
+    public ResponseEntity<GrowingLocation> updateGrowingLocation(@PathVariable Long id,
+            @Valid @RequestBody GrowingLocation growingLocation) {
+        GrowingLocation updatedGrowingLocation =
+                growingLocationService.updateGrowingLocation(id, growingLocation);
         return new ResponseEntity<>(updatedGrowingLocation, HttpStatus.OK);
     }
 
